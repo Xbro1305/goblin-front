@@ -18,6 +18,16 @@
   --bg-color: #f2f2f2;
 }
 
+::-webkit-scrollbar {
+  background: #f2f2f2;
+  border-radius: 60px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1b9027 0%, #bad52d 100%);
+  border-radius: 60px;
+}
+
 button {
   cursor: pointer;
 }

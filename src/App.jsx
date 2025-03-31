@@ -1,12 +1,20 @@
-import { Login } from "./Pages/Login/Login";
-import { Route, Routes } from "react-router-dom";
-import { Signin } from "./Pages/Signin/Signin";
+import React from "react";
+import { Router } from "./Router";
+import { Header } from "./Components/Header/Header";
 
 export const App = () => {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signin" element={<Signin />} />
-    </Routes>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        flexDirection: "column",
+        display: "flex",
+      }}
+    >
+      {window.location.pathname !== "/login" &&
+        window.location.pathname !== "signin" && <Header />}
+      <Router />
+    </div>
   );
 };
