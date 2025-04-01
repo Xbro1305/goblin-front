@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./Input.module.scss";
 
-export const Input = ({ onChange, value, placeholder }) => {
+export const Input = ({ onChange, value, placeholder, readonly }) => {
   return (
     <label className={styles.inputLabel}>
       <input
         required
         type="text"
+        readOnly={readonly}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

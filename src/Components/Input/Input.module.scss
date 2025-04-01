@@ -30,7 +30,7 @@
     padding: 20px;
     font-family: Montserrat;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 18px;
     line-height: 160%;
     letter-spacing: 0%;
   }
@@ -40,15 +40,15 @@
     box-shadow: 0 0 0 2px var(--primary-1);
   }
 
-  input:focus + p {
+  input:focus + p > p {
     left: 10px;
-    font-size: 12px;
-    transform: translateY(-25px);
+    font-size: 14px !important;
+    transform: translateY(-30px);
   }
 
-  input:valid + p {
+  input:valid + p > p {
     left: 10px;
-    font-size: 12px;
-    transform: translateY(-25px);
+    font-size: 14px !important;
+    transform: translateY(-30px);
   }
 }

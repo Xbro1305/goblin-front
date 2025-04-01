@@ -72,7 +72,7 @@
   }
 
   &_content {
-    height: 100%;
+    height: calc(100vh - 190px);
     width: 100%;
     padding: 10px;
     background: #f2f2f2;
@@ -80,7 +80,7 @@
     overflow: auto;
   }
 
-  &_transactions {
+  &_transaction {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -113,7 +113,7 @@
       }
     }
 
-    form {
+    &_form {
       display: flex;
       height: 100%;
       justify-content: flex-start;
@@ -201,12 +201,14 @@
       }
     }
 
-    button {
+    &_sendButton {
       width: 140px;
       height: 40px;
       padding: 0;
       font-weight: 400;
       border-radius: 4px;
+      background: var(--red-gradient);
+      color: white;
     }
 
     &_amount_input {
@@ -242,6 +244,100 @@
       padding: 10px;
       gap: 10px;
       font-weight: 500;
+    }
+  }
+
+  &_transaction_history {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
+    > h1 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+    }
+    &_table {
+      display: flex;
+      flex-direction: column;
+      display: flex;
+
+      &_head,
+      &_body > div {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+        gap: 20px;
+      }
+
+      &_body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px 0;
+
+        p {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          height: 35px;
+          padding: 10px;
+          border-radius: 4px;
+          background: white;
+        }
+      }
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #00000080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .modal_content {
+      max-width: 500px;
+      background: white;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+      position: relative;
+      gap: 10px;
+
+      h1 {
+        font-size: 30px;
+        font-weight: 600;
+      }
+
+      > p {
+        font-size: 20px;
+      }
+
+      button {
+        font-weight: 400;
+      }
+    }
+
+    &_amount {
+      height: 85px;
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #eaeaea;
+      border-radius: 4px;
     }
   }
 }

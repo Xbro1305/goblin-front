@@ -18,14 +18,40 @@
   --bg-color: #f2f2f2;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   background: #f2f2f2;
   border-radius: 60px;
+  padding: 10px;
+  width: 15px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #1b9027 0%, #bad52d 100%);
   border-radius: 60px;
+  width: 8px !important;
+  height: 8px;
+} */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Фон полосы прокрутки */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  margin: 5px 0; /* Отступы сверху и снизу */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1b9027 0%, #bad52d 100%);
+  border-radius: 60px;
+  width: 8px !important;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #5ea132, #a0d06e);
 }
 
 button {
