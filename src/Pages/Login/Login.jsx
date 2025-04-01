@@ -18,10 +18,7 @@ export const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify({
-        email,
-        password,
-      }),
+      data: { email, password },
     })
       .then((response) => {
         console.log(response.data);
@@ -51,6 +48,7 @@ export const Login = () => {
           <Input
             onChange={(value) => setPassword(value)}
             value={password}
+            type="password"
             placeholder={
               <p>
                 <CiLock /> Пароль
