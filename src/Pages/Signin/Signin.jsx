@@ -2,7 +2,7 @@ import react from "react";
 import styles from "../Login/Login.module.scss";
 import { Input } from "../../Components/Input/Input";
 import { CiLock, CiUser } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import axios from "axios";
 
@@ -12,6 +12,7 @@ export const Signin = () => {
   const [confirmPassword, setConfirmPassword] = react.useState("");
   const [name, setName] = react.useState("");
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,7 +27,9 @@ export const Signin = () => {
       }),
     })
       .then((response) => {
-        console.log(response.data);
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        navigate("/profile");
       })
       .catch((error) => {
         console.error(error);
