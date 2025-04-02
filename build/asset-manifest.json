@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.38f202b4.css",
+    "main.js": "/static/js/main.bd23e828.js",
+    "static/media/Гоблин 2.svg": "/static/media/Гоблин 2.2545131a882917177d8e3ebdf47224ac.svg",
+    "index.html": "/index.html",
+    "main.38f202b4.css.map": "/static/css/main.38f202b4.css.map",
+    "main.bd23e828.js.map": "/static/js/main.bd23e828.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38f202b4.css",
+    "static/js/main.bd23e828.js"
+  ]
+}
