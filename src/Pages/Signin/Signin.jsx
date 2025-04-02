@@ -26,15 +26,14 @@ export const Signin = () => {
         password,
       }),
     })
-      .then((response) => {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        navigate("/profile");
+      .then(() => {
+        navigate("/login");
       })
       .catch((error) => {
         console.error(error);
       });
   };
+  
   return (
     <div className={styles.login}>
       <div className={styles.loginContainer}>
@@ -56,6 +55,7 @@ export const Signin = () => {
           <Input
             onChange={(value) => setEmail(value)}
             value={email}
+            type={"email"}
             placeholder={
               <p>
                 <MdEmail /> E-mail
@@ -65,6 +65,7 @@ export const Signin = () => {
           <Input
             onChange={(value) => setPassword(value)}
             value={password}
+            type="password"
             placeholder={
               <p>
                 <CiLock /> Пароль
@@ -74,6 +75,7 @@ export const Signin = () => {
           <Input
             onChange={(value) => setConfirmPassword(value)}
             value={confirmPassword}
+            type="password"
             placeholder={
               <p>
                 <CiLock /> Пароль (повторите)

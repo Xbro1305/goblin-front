@@ -7,6 +7,7 @@ import { PiCardholder } from "react-icons/pi";
 import { BsClock, BsCoin } from "react-icons/bs";
 import { Input } from "../../Components/Input/Input";
 import { NumericFormat } from "react-number-format";
+import axios from "axios";
 
 export const Profile = () => {
   const [page, setPage] = React.useState("transaction");
@@ -66,6 +67,8 @@ const ProfileTransaction = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [code, setCode] = React.useState("");
 
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
   const handleInnerSubmit = (e) => {
     e.preventDefault();
     setIsModalOpen(1);
@@ -121,7 +124,42 @@ const ProfileTransaction = () => {
   );
 
   const handleTranslate = () => {
-    setIsModalOpen(3);
+    const internalConfig = {
+      method: "POST",
+      url: `${baseUrl}/api/transactions/internal-transfer`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("tokennpm run ")}`,
+      },
+
+      data: {
+        receiver: address,
+        amount,
+        currency,
+      },
+    };
+
+    const externalConfig = {
+      method: "POST",
+      url: `${baseUrl}/api/transactions/external-transfer`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+
+      data: {
+        externalAddress: address,
+        amount,
+        currency,
+      },
+    };
+
+    axios(transactionType == 0 ? internalConfig : externalConfig)
+      .then((response) => {
+        console.log(response.data);
+        setIsModalOpen(3);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
