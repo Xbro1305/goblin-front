@@ -15,6 +15,11 @@ export const Signin = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
+    if (password !== confirmPassword) {
+      alert("Пароли не совпадают");
+      return;
+    }
+
     e.preventDefault();
     axios(`${baseUrl}/api/users/register`, {
       method: "POST",
@@ -33,7 +38,7 @@ export const Signin = () => {
         console.error(error);
       });
   };
-  
+
   return (
     <div className={styles.login}>
       <div className={styles.loginContainer}>

@@ -57,6 +57,26 @@ export const Profile = () => {
   );
 };
 
+const Info = () => {
+  const [user, setUser] = React.useState({});
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  useEffect(() => {
+    axios(`${baseUrl}/api/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((err) => {});
+  }, []);
+  return <div className={styles.profile_info}></div>;
+};
+
 const ProfileTransaction = () => {
   const [transactionType, setTransactionType] = React.useState(0);
   const [address, setAddress] = React.useState("");
