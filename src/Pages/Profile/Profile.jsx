@@ -59,6 +59,7 @@ export const Profile = () => {
 
 const Info = () => {
   const [user, setUser] = React.useState({});
+  const [balance, setBalance] = React.useState(0);
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const data = {
@@ -93,11 +94,25 @@ const Info = () => {
         setUser(response.data);
       })
       .catch((err) => {});
+
+    axios(`${baseUrl}/api/transactions/balance`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        setBalance(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   return (
     <div className={styles?.profile_info}>
       Имя:{user?.name} <br />
-      Баланс Общий:{user.usdtTotal} <br />
+      Баланс Общий:{balance} <br />
       Почта: {user?.email} <br />
       Дата регистрации: {user?.createdAt} <br />
       Крипто кошельки:{" "}
