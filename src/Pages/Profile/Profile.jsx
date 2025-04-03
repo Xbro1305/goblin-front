@@ -515,7 +515,13 @@ const navigationItems = [
     icon: <GrTransaction />,
     page: <ProfileTransaction />,
   },
-  { name: "Статистика", id: 2, key: "statistics", icon: <FaChartBar /> },
+  {
+    name: "Статистика",
+    id: 2,
+    key: "statistics",
+    icon: <FaChartBar />,
+    page: <Info />,
+  },
   { name: "Способы оплаты", id: 3, key: "payment", icon: <PiCardholder /> },
   {
     name: "История транзакций",
