@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Profile.module.scss";
 import { BiChevronDown, BiGitBranch } from "react-icons/bi";
 import { GrTransaction } from "react-icons/gr";
@@ -129,7 +129,7 @@ const ProfileTransaction = () => {
       url: `${baseUrl}/api/transactions/internal-transfer`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("tokennpm run ")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
 
       data: {
@@ -425,6 +425,20 @@ const transactionHistory = [
 ];
 
 const TransactionHistory = () => {
+  useEffect(() => {
+    axios(`${process.env.REACT_APP_BASE_URL}/api/transactions/transactions`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className={styles.profile_transaction_history}>
       <h1>
@@ -444,8 +458,17 @@ const TransactionHistory = () => {
               <p>{transaction.id}</p>
               <p>{transaction.address}</p>
               <p>
-                {transaction.amount}{" "}
-                <p style={{ color: transaction.currencyColor }}>
+                {transaction.amount}
+                <p
+                  style={{
+                    color:
+                      transaction.currency == "USDT"
+                        ? "#86C239"
+                        : transaction.currency == "BTC"
+                        ? "#e9a907"
+                        : "#1291d9",
+                  }}
+                >
                   {transaction.currency}
                 </p>
               </p>
