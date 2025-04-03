@@ -97,6 +97,7 @@ const Info = () => {
   return (
     <div className={styles?.profile_info}>
       Имя:{user?.name} <br />
+      Баланс Общий:{user.usdtTotal} <br />
       Почта: {user?.email} <br />
       Дата регистрации: {user?.createdAt} <br />
       Крипто кошельки:{" "}
@@ -105,9 +106,6 @@ const Info = () => {
           <div key={wallet?.id}>
             <p>Адрес: {wallet?.address}</p>
             <p>Блокчейн: {wallet?.blockchain}</p>
-            <p>Дата создания: {wallet?.createdAt}</p>
-            <p>Дата обновления: {wallet?.updatedAt}</p>
-            <p>Приватный ключ: {wallet?.privateKey}</p>
             <p>Баланс: {wallet.usdtBalance}</p>
           </div>
         );
