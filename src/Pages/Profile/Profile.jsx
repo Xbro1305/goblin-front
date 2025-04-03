@@ -133,7 +133,7 @@ const ProfileTransaction = () => {
       },
 
       data: {
-        receiver: address,
+        recipientEmail: address,
         amount,
         currency,
       },
