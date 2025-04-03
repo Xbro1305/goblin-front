@@ -436,7 +436,7 @@ const TransactionHistory = () => {
       .then((response) => {
         console.log(response.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   }, []);
 
   return (
