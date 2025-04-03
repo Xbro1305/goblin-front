@@ -108,6 +108,7 @@ const Info = () => {
             <p>Дата создания: {wallet?.createdAt}</p>
             <p>Дата обновления: {wallet?.updatedAt}</p>
             <p>Приватный ключ: {wallet?.privateKey}</p>
+            <p>Баланс: {wallet.usdtBalance}</p>
           </div>
         );
       })}
