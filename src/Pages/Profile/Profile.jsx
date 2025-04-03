@@ -112,7 +112,7 @@ const Info = () => {
   return (
     <div className={styles?.profile_info}>
       Имя:{user?.name} <br />
-      Баланс Общий:{balance} <br />
+      Баланс Общий:{balance.usdtBalance} <br />
       Почта: {user?.email} <br />
       Дата регистрации: {user?.createdAt} <br />
       Крипто кошельки:{" "}
