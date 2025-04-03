@@ -95,19 +95,19 @@ const Info = () => {
       .catch((err) => {});
   }, []);
   return (
-    <div className={styles.profile_info}>
-      Имя:{user.name} <br />
-      Почта: {user.email} <br />
-      Дата регистрации: {user.createdAt} <br />
+    <div className={styles?.profile_info}>
+      Имя:{user?.name} <br />
+      Почта: {user?.email} <br />
+      Дата регистрации: {user?.createdAt} <br />
       Крипто кошельки:{" "}
-      {user.wallets.map((wallet) => {
+      {user?.wallets?.map((wallet) => {
         return (
-          <div key={wallet.id}>
-            <p>Адрес: {wallet.address}</p>
-            <p>Блокчейн: {wallet.blockchain}</p>
-            <p>Дата создания: {wallet.createdAt}</p>
-            <p>Дата обновления: {wallet.updatedAt}</p>
-            <p>Приватный ключ: {wallet.privateKey}</p>
+          <div key={wallet?.id}>
+            <p>Адрес: {wallet?.address}</p>
+            <p>Блокчейн: {wallet?.blockchain}</p>
+            <p>Дата создания: {wallet?.createdAt}</p>
+            <p>Дата обновления: {wallet?.updatedAt}</p>
+            <p>Приватный ключ: {wallet?.privateKey}</p>
           </div>
         );
       })}
