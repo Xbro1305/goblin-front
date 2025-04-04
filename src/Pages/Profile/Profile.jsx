@@ -8,6 +8,7 @@ import { BsClock, BsCoin } from "react-icons/bs";
 import { Input } from "../../Components/Input/Input";
 import { NumericFormat } from "react-number-format";
 import axios from "axios";
+import { GoArrowDownLeft, GoArrowUpRight } from "react-icons/go";
 
 export const Profile = () => {
   const [page, setPage] = React.useState("transaction");
@@ -466,37 +467,9 @@ const ProfileTransaction = () => {
   );
 };
 
-const transactionHistory = [
-  {
-    id: 0,
-    date: "2023-10-01",
-    address: "0x1234567890abcdef",
-    amount: 100,
-    currency: "USDT",
-    currencyColor: "#86C239",
-    status: "Completed",
-  },
-  {
-    id: 1,
-    date: "2023-10-02",
-    address: "0x1234567890abcdef",
-    amount: 50,
-    currency: "BTC",
-    currencyColor: "#e9a907",
-    status: "Pending",
-  },
-  {
-    id: 1,
-    date: "2023-10-02",
-    address: "0x1234567890abcdef",
-    amount: 50,
-    currency: "ETH",
-    currencyColor: "#1291d9",
-    status: "Pending",
-  },
-];
-
 const TransactionHistory = () => {
+  const [data, setData] = React.useState([]);
+
   useEffect(() => {
     axios(`${process.env.REACT_APP_BASE_URL}/api/transactions/transactions`, {
       method: "GET",
@@ -506,7 +479,7 @@ const TransactionHistory = () => {
       },
     })
       .then((response) => {
-        console.log(response.data);
+        setData(response.data);
       })
       .catch((err) => {});
   }, []);
@@ -525,7 +498,7 @@ const TransactionHistory = () => {
           <th>Дата</th>
         </div>
         <div className={styles.profile_transaction_history_table_body}>
-          {transactionHistory.map((transaction) => (
+          {/* {transactionHistory.map((transaction) => (
             <div key={transaction.id}>
               <p>{transaction.id}</p>
               <p>{transaction.address}</p>
@@ -546,7 +519,48 @@ const TransactionHistory = () => {
               </p>
               <p>{transaction.date}</p>
             </div>
-          ))}
+          ))} */}
+
+          {data.length ? (
+            data.map((transaction) => (
+              <div key={transaction.id}>
+                <p>{transaction.id}</p>
+                <p>
+                  {transaction.direction == "IN" ? (
+                    <GoArrowDownLeft />
+                  ) : (
+                    <GoArrowUpRight />
+                  )}
+
+                  {transaction.type == "INTERNAL"
+                    ? transaction.direction == "IN"
+                      ? transaction.senderEmail
+                      : transaction.recipientEmail
+                    : transaction.direction == "IN"
+                    ? transaction.senderAddress
+                    : transaction.receiverAddress}
+                </p>
+                <p>
+                  {transaction.amount}
+                  <p
+                    style={{
+                      color:
+                        transaction.currency == "USDT"
+                          ? "#86C239"
+                          : transaction.currency == "BTC"
+                          ? "#e9a907"
+                          : "#1291d9",
+                    }}
+                  >
+                    {transaction.currency}
+                  </p>
+                </p>
+                <p>{transaction.createdAt}</p>
+              </div>
+            ))
+          ) : (
+            <p>Нет транзакций</p>
+          )}
         </div>
       </table>
     </div>

@@ -7,7 +7,7 @@ export const AuthGuard = () => {
     (!localStorage.getItem("token") && location.pathname !== "/login") ||
     (!localStorage.getItem("token") && location.pathname !== "/signin")
   ) {
-    return <Navigate to={`/login`} replace />;
+    // return <Navigate to={`/login`} replace />;
   }
 
   return <Outlet />;
