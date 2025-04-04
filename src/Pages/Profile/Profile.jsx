@@ -63,26 +63,6 @@ const Info = () => {
   const [balance, setBalance] = React.useState(0);
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  const data = {
-    id: 3,
-    email: "x.bro2010@gmail.com",
-    password: "$2a$10$nHlWgHv6CDH.vtbllUdl9.c1tQ5cU8nuU80BHsK1lplc5YyBFCu5G",
-    name: null,
-    createdAt: "2025-04-03T08:32:22.949Z",
-    wallets: [
-      {
-        id: 3,
-        userId: 3,
-        address: "TJYdN6HdhQjdFHdYtZGRpSo8tCGkTYHhqY",
-        privateKey:
-          '{"key":"f26653f021ff98d8e87131fc2d882550b2079426260b1841790163f11b7d457d","iv":"a6ca499b868f343c092f2fb1a4b484d2","encryptedPrivateKey":"d98efe0890dde4f8ca69c54bca0bbcee870732dcb46dc65414df1c44a012e6262b0fbc49ef316777f4fc1d4d5432075bb4d6c2f99ba369fae7fe1403d6d86aa048290339b20442601ff29d7d38846fab"}',
-        blockchain: "TRON",
-        createdAt: "2025-04-03T08:32:22.958Z",
-        updatedAt: "2025-04-03T08:32:22.962Z",
-      },
-    ],
-  };
-
   useEffect(() => {
     axios(`${baseUrl}/api/users/me`, {
       method: "GET",
@@ -113,7 +93,16 @@ const Info = () => {
   return (
     <div className={styles?.profile_info}>
       Имя:{user?.name} <br />
-      Баланс Общий:{balance.usdtBalance} <br />
+      Баланс USDT:{balance.usdtBalance} <br />
+      Баланс TRX:{balance.trxBalance} <br />
+      Баланс BTC:{balance.btcBalance} <br />
+      Баланс ETH:{balance.ethBalance} <br />
+      Баланс Общий:
+      {balance.usdtBalance +
+        balance.trxBalance +
+        balance.btcBalance +
+        balance.ethBalance}{" "}
+      <br />
       Почта: {user?.email} <br />
       Дата регистрации: {user?.createdAt} <br />
       Крипто кошельки:{" "}
