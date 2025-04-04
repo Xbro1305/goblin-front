@@ -120,6 +120,7 @@ const ProfileTransaction = () => {
   const [currencyColor, setCurrencyColor] = React.useState("#86C239");
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [code, setCode] = React.useState("");
+  const [isCodeSent, setIsCodeSent] = React.useState(false);
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -178,6 +179,8 @@ const ProfileTransaction = () => {
   );
 
   const handleTranslate = () => {
+    setIsCodeSent(true);
+
     const internalConfig = {
       method: "POST",
       url: `${baseUrl}/api/transactions/internal-transfer`,
@@ -208,12 +211,20 @@ const ProfileTransaction = () => {
       },
     };
 
+    if (address == "" || amount == "" || currency == "" || isCodeSent == true) {
+      return;
+    }
+
     axios(transactionType == 0 ? internalConfig : externalConfig)
       .then((response) => {
         console.log(response.data);
         setIsModalOpen(3);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setCode("");
+        setIsCodeSent(false);
+      });
   };
 
   return (
