@@ -95,14 +95,6 @@ const Info = () => {
       Имя:{user?.name} <br />
       Баланс USDT:{balance.usdtBalance} <br />
       Баланс TRX:{balance.trxBalance} <br />
-      Баланс BTC:{balance.btcBalance} <br />
-      Баланс ETH:{balance.ethBalance} <br />
-      Баланс Общий:
-      {balance.usdtBalance +
-        balance.trxBalance +
-        balance.btcBalance +
-        balance.ethBalance}{" "}
-      <br />
       Почта: {user?.email} <br />
       Дата регистрации: {user?.createdAt} <br />
       Крипто кошельки:{" "}
