@@ -74,7 +74,12 @@ const Info = () => {
       .then((response) => {
         setUser(response.data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        if (err.response.status == 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+      });
 
     axios(`${baseUrl}/api/transactions/balance`, {
       method: "GET",
