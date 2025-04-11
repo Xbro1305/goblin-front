@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Header.module.scss";
 import goblin from "../../assets/images/Гоблин 2.svg";
 import { Link } from "react-router-dom";
-import { BiPhone } from "react-icons/bi";
 import { FaPhone, FaUser } from "react-icons/fa";
 
 export const Header = () => {

@@ -552,7 +552,7 @@ const TransactionHistory = () => {
                     {transaction.currency}
                   </p>
                 </p>
-                <p>{transaction.createdAt}</p>
+                <p>{transaction.createdAt.split("T")[0]}</p>
               </div>
             ))
           ) : (
