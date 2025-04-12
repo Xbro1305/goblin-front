@@ -11,7 +11,7 @@ export const MyOrders = () => {
   return (
     <div className={styles.myOrders}>
       <img src={bg} className="background" alt="" />
-      <h1 className="h1 title">Мои объявления</h1>
+      <h1 className="h1 title">Orders</h1>
       <div className={styles.myOrders_content}>
         <div className={styles.myOrders_content_top}>
           <section className={styles.myOrders_content_top_section}>
