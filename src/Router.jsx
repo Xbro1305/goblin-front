@@ -4,6 +4,7 @@ import { Signin } from "./Pages/Signin/Signin";
 import { Profile } from "./Pages/Profile/Profile";
 import { AuthGuard } from "./Components/Auth/Auth-guard";
 import { Chat } from "./Pages/P2P/Chat/Chat";
+import { MyOrders } from "./Pages/P2P/MyOrders/MyOrders";
 
 export const Router = () => {
   return (
@@ -12,8 +13,9 @@ export const Router = () => {
       <Route path="/signin" element={<Signin />} />
       <Route path="/" element={<AuthGuard />}>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/p2p/my-orders" element={<MyOrders />} />
+        <Route path="/chat/:id" element={<Chat />} />
       </Route>
-      <Route path="/chat/:id" element={<Chat />} />
       <Route path="*" element={<Login />} />
     </Routes>
   );
