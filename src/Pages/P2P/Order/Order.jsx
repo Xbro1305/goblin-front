@@ -142,6 +142,21 @@ export const Order = () => {
       <p className="p" style={{ borderBottom: "1px solid #9D9D9D" }}>
         Transaction Info
       </p>
+      <button
+        className="green-button"
+        style={{
+          width: "fit-content",
+          padding: "7px 120px",
+          fontWeight: "400",
+          height: "auto",
+          margin: "0 auto",
+        }}
+      >
+        Release Now
+      </button>
+      <p className="span" style={{ textAlign: "center" }}>
+        Encountered an Issue
+      </p>
     </div>
   );
 };
