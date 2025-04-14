@@ -9,7 +9,7 @@ export const Trading = () => {
   return (
     <div className={styles.trading}>
       <img src={bg} className="background" alt="" />
-      <h1 className="h1 title">P2P Trading</h1>
+      <h1 className="h1 title">P2P Deals</h1>
       <div className={styles.trading_content}>
         <div className={styles.trading_content_main}>
           <div className={styles.trading_content_main_top}>
