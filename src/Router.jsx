@@ -8,6 +8,7 @@ import { MyOrders } from "./Pages/P2P/MyOrders/MyOrders";
 import { Order } from "./Pages/P2P/Order/Order";
 import { Trading } from "./Pages/P2P/Trading/Trading";
 import { Me } from "./Pages/Me/Me";
+import { CreateOrder } from "./Pages/P2P/CreateOrder/CreateOrder";
 
 export const Router = () => {
   return (
@@ -21,6 +22,7 @@ export const Router = () => {
         <Route path="/p2p/deals" element={<Trading />} />
         <Route path="/chat/:id" element={<Chat />} />
         <Route path="/me" element={<Me />} />
+        <Route path="/p2p/create-order" element={<CreateOrder />} />
       </Route>
       <Route path="*" element={<Navigate to={"/login"} />} />
     </Routes>
