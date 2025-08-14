@@ -1,4 +1,4 @@
-import react from "react";
+import react, { useEffect } from "react";
 import styles from "../Login/Login.module.scss";
 import { Input } from "../../Components/Input/Input";
 import { CiLock, CiUser } from "react-icons/ci";
@@ -13,6 +13,10 @@ export const Signin = () => {
   const [name, setName] = react.useState("");
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/profile");
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     if (password !== confirmPassword) {

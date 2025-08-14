@@ -1,4 +1,4 @@
-import react from "react";
+import react, { useEffect } from "react";
 import styles from "./Login.module.scss";
 import { Input } from "../../Components/Input/Input";
 import { CiLock, CiUser } from "react-icons/ci";
@@ -12,6 +12,10 @@ export const Login = () => {
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/profile");
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
