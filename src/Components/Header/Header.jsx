@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Header.module.scss";
 import goblin from "../../assets/images/Гоблин 2.svg";
 import { Link } from "react-router-dom";
 import { FaPhone, FaUser } from "react-icons/fa";
+import axios from "axios";
+import { Loader } from "../Loader/Loader";
 
 export const Header = () => {
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState({});
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  useEffect(() => {
+    axios(`${baseUrl}/api/auth/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((err) => {
+        if (err.response.status == 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
   return (
     <header className={styles.header}>
+      {loading && <Loader />}
       <div className={styles.header_logo}>
         <img src={goblin} alt="Гоблин" />
         Гоблин
@@ -15,29 +41,29 @@ export const Header = () => {
         <Link className={styles.header_links_item} to={"/p2p/deals"}>
           P2P
         </Link>
-        <Link className={styles.header_links_item} to="/p2p/my-orders">
-          Процессинг
+        <Link className={styles.header_links_item}>Процессинг</Link>
+        <Link className={styles.header_links_item} to="/transactions">
+          Переводы
         </Link>
-        <Link className={styles.header_links_item}>Мои объявления</Link>
+        <Link className={styles.header_links_item} to="/p2p/my-orders">
+          Мои объявления
+        </Link>
       </ul>
       <div className={`${styles.header_links} ${styles.header_contacts}`}>
         <Link to={"tel:"}>
           <FaPhone style={{ transform: "rotate(90deg)" }} />
         </Link>
-        <Link to={"/profile"}>
+        <Link to={"/me"}>
           <FaUser />
         </Link>
         <div className={styles.header_user}>
-          <p>Имя пользователя</p>
+          <p>{user?.email}</p>
           <div>
             <section>
-              1000 <span>USDT</span>
+              {user?.wallets?.[0]?.usdtBalance} <span>USDT</span>
             </section>
             <section>
-              1 <span>BTC</span>
-            </section>
-            <section>
-              3 <span>ETH</span>
+              {user?.wallets?.[0]?.trxBalance} <span>TRX</span>
             </section>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { TbCopy } from "react-icons/tb";
 import { BsChatLeftDots } from "react-icons/bs";
 import { enqueueSnackbar } from "notistack";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const MyOrders = () => {
   const [page, setPage] = React.useState("active");
@@ -41,7 +42,10 @@ export const MyOrders = () => {
   return (
     <div className={styles.myOrders}>
       <img src={bg} className="background" alt="" />
-      <h1 className="h1 title">Orders</h1>
+      <section className={styles.myOrders_top}>
+        <h1 className="h1 title">Orders</h1>
+        <Link to="/p2p/create-order">+</Link>
+      </section>
       <div className={styles.myOrders_content}>
         <div className={styles.myOrders_content_top}>
           <section className={styles.myOrders_content_top_section}>

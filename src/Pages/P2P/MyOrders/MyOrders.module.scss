@@ -5,6 +5,19 @@
   gap: 20px;
   padding: 20px var(--sides-padding);
 
+  &_top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    a {
+      font-size: 28px;
+      margin-right: 20px;
+      color: #567e5f;
+    }
+  }
+
   &_content {
     padding: 20px;
     background: #eee;

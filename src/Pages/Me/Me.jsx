@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Me.module.scss";
 import { FaUser, FaUserPlus } from "react-icons/fa";
 import { TbCopy } from "react-icons/tb";
@@ -10,10 +10,36 @@ import { IoCard } from "react-icons/io5";
 import { HiUser } from "react-icons/hi";
 import { GrNotification } from "react-icons/gr";
 import { FaUserLock } from "react-icons/fa6";
+import axios from "axios";
+import { Loader } from "../../Components/Loader/Loader";
 
 export const Me = () => {
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState({});
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  useEffect(() => {
+    axios(`${baseUrl}/api/auth/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((err) => {
+        if (err.response.status == 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
   return (
     <div className={styles.profile}>
+      {loading && <Loader />}
       <img src={bg} className="background" alt="" />
       <div className={styles.profile_top}>
         <section>
@@ -21,16 +47,16 @@ export const Me = () => {
         </section>
         <div className={styles.profile_top_info}>
           <h1 className="h1">
-            User1490FOUJNg
+            {user.email}
             <button
               onClick={() => {
-                navigator.clipboard.writeText("User1490FOUJNg");
+                navigator.clipboard.writeText(user.email);
               }}
             >
               <TbCopy />
             </button>
           </h1>
-          <div>
+          {/* <div>
             <p>
               <FiCheckCircle
                 style={{ color: "#376C11", borderColor: "#376C11" }}
@@ -55,7 +81,7 @@ export const Me = () => {
               />
               Deposit
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className={styles.profile_info}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.scss";
 import { BiChevronDown, BiGitBranch } from "react-icons/bi";
 import { GrTransaction } from "react-icons/gr";
@@ -9,29 +9,43 @@ import { Input } from "../../Components/Input/Input";
 import { NumericFormat } from "react-number-format";
 import axios from "axios";
 import { GoArrowDownLeft, GoArrowUpRight } from "react-icons/go";
+import { Loader } from "../../Components/Loader/Loader";
 
 export const Profile = () => {
   const [page, setPage] = React.useState("transaction");
+  const [balance, setBalance] = React.useState(0);
+  const [loading, setLoading] = useState(true);
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  useEffect(() => {
+    axios(`${baseUrl}/api/transactions/balance`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        setBalance(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className={styles.profile}>
+      {loading && <Loader />}
       <div className={styles.profile_navigation}>
         <div className={styles.profile_navigation_item}>
           <BsCoin />
-          1000 <span>USDT</span>
+          {balance.usdtBalance} <span>USDT</span>
         </div>{" "}
         <div className={styles.profile_navigation_item}>
           <BsCoin />
-          1000 <span>BTC</span>
+          {balance.trxBalance} <span>TRX</span>
         </div>{" "}
-        <div className={styles.profile_navigation_item}>
-          <BsCoin />
-          1000 <span>ETH</span>
-        </div>{" "}
-        <div className={styles.profile_navigation_item}>
-          <BsCoin />
-          BTC 1000 <span>ETH</span>
-        </div>
         {navigationItems.map((item) => (
           <div
             key={item.id}
@@ -47,12 +61,7 @@ export const Profile = () => {
         ))}
       </div>
       <div className={styles.profile_content}>
-        {navigationItems.map((item) => {
-          if (page == item.key) {
-            return item.page ? item.page : <div>Page not found</div>;
-          }
-          return null;
-        })}
+        {navigationItems.find((item) => item.key == page).page}
       </div>
     </div>
   );
@@ -97,7 +106,6 @@ const Info = () => {
   }, []);
   return (
     <div className={styles?.profile_info}>
-      Имя:{user?.name} <br />
       Баланс USDT:{balance.usdtBalance} <br />
       Баланс TRX:{balance.trxBalance} <br />
       Почта: {user?.email} <br />
@@ -237,7 +245,9 @@ const ProfileTransaction = () => {
       <div className={styles.profile_transaction_top}>
         <div
           className={
-            transactionType == 0 && styles.profile_transaction_top_item_active
+            transactionType == 0
+              ? styles.profile_transaction_top_item_active
+              : ""
           }
           onClick={() => setTransactionType(0)}
         >
@@ -245,7 +255,9 @@ const ProfileTransaction = () => {
         </div>
         <div
           className={
-            transactionType == 1 && styles.profile_transaction_top_item_active
+            transactionType == 1
+              ? styles.profile_transaction_top_item_active
+              : ""
           }
           onClick={() => setTransactionType(1)}
         >
@@ -488,12 +500,12 @@ const TransactionHistory = () => {
         История транзакций
       </h1>
       <table className={styles.profile_transaction_history_table}>
-        <div className={styles.profile_transaction_history_table_head}>
+        <tr className={styles.profile_transaction_history_table_head}>
           <th>ID</th>
           <th>Почта</th>
           <th>Сумма</th>
           <th>Дата</th>
-        </div>
+        </tr>
         <div className={styles.profile_transaction_history_table_body}>
           {/* {transactionHistory.map((transaction) => (
             <div key={transaction.id}>
@@ -565,12 +577,12 @@ const TransactionHistory = () => {
 };
 
 const navigationItems = [
-  {
-    name: "Реферальная системя",
-    icon: <BiGitBranch />,
-    id: 0,
-    key: "referral",
-  },
+  // {
+  //   name: "Реферальная системя",
+  //   icon: <BiGitBranch />,
+  //   id: 0,
+  //   key: "referral",
+  // },
   {
     name: "Перевод",
     id: 1,
@@ -578,14 +590,13 @@ const navigationItems = [
     icon: <GrTransaction />,
     page: <ProfileTransaction />,
   },
-  {
-    name: "Статистика",
-    id: 2,
-    key: "statistics",
-    icon: <FaChartBar />,
-    page: <Info />,
-  },
-  { name: "Способы оплаты", id: 3, key: "payment", icon: <PiCardholder /> },
+  // {
+  //   name: "Статистика",
+  //   id: 2,
+  //   key: "statistics",
+  //   icon: <FaChartBar />,
+  //   page: <Info />,
+  // },
   {
     name: "История транзакций",
     id: 4,

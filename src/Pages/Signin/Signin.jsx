@@ -15,7 +15,7 @@ export const Signin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) navigate("/profile");
+    if (localStorage.getItem("token")) navigate("/me");
   }, [navigate]);
 
   const handleSubmit = (e) => {

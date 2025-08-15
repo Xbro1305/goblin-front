@@ -105,7 +105,7 @@ export const CreateOrder = () => {
               <option value="15">15 мин.</option>
             </select>
           </label>
-          <label>
+          {/* <label>
             <p className="p">Способ оплаты </p>
             <div className={styles.createOrder_payment}>
               <IoCard />
@@ -114,7 +114,7 @@ export const CreateOrder = () => {
                 <span className="span">**** ФИО</span>
               </section>
             </div>
-          </label>
+          </label> */}
         </div>
         <div className={styles.createOrder_left}>
           <label>
@@ -124,6 +124,7 @@ export const CreateOrder = () => {
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
               name="currency"
+              
               id=""
             >
               <option value="usdt">RUB</option>

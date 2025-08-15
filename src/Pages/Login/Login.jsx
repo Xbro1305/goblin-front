@@ -1,10 +1,11 @@
 import react, { useEffect } from "react";
 import styles from "./Login.module.scss";
 import { Input } from "../../Components/Input/Input";
-import { CiLock, CiUser } from "react-icons/ci";
+import { CiLock } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import { MdEmail } from "react-icons/md";
 
 export const Login = () => {
   const [email, setEmail] = react.useState("");
@@ -14,7 +15,7 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) navigate("/profile");
+    if (localStorage.getItem("token")) navigate("/me");
   }, [navigate]);
 
   const handleSubmit = (e) => {
@@ -29,7 +30,7 @@ export const Login = () => {
       .then((response) => {
         const token = response.data.token;
         localStorage.setItem("token", token);
-        navigate("/profile");
+        navigate("/me");
       })
       .catch((error) => {
         console.error(error);
@@ -53,7 +54,7 @@ export const Login = () => {
             value={email}
             placeholder={
               <p>
-                <CiUser /> Логин
+                <MdEmail /> E-mail
               </p>
             }
           />
