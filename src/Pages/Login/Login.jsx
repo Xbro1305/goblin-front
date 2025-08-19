@@ -52,6 +52,7 @@ export const Login = () => {
           <Input
             onChange={(value) => setEmail(value)}
             value={email}
+            name="email"
             placeholder={
               <p>
                 <MdEmail /> E-mail
@@ -62,6 +63,7 @@ export const Login = () => {
             onChange={(value) => setPassword(value)}
             value={password}
             type="password"
+            name="password"
             placeholder={
               <p>
                 <CiLock /> Пароль

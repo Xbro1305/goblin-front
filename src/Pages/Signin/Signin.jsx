@@ -59,6 +59,7 @@ export const Signin = () => {
         <form onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
           <Input
             value={name}
+            name="name"
             onChange={(value) => setName(value)}
             placeholder={
               <p>
@@ -70,6 +71,7 @@ export const Signin = () => {
             onChange={(value) => setEmail(value)}
             value={email}
             type={"email"}
+            name="email"
             placeholder={
               <p>
                 <MdEmail /> E-mail
@@ -79,6 +81,7 @@ export const Signin = () => {
           <Input
             onChange={(value) => setPassword(value)}
             value={password}
+            name="password"
             type="password"
             placeholder={
               <p>
