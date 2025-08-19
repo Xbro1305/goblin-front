@@ -6,7 +6,7 @@ import { AuthGuard } from "./Components/Auth/Auth-guard";
 import { Chat } from "./Pages/P2P/Chat/Chat";
 import { MyOrders } from "./Pages/P2P/MyOrders/MyOrders";
 import { Order } from "./Pages/P2P/Order/Order";
-import { Trading } from "./Pages/P2P/Trading/Trading";
+import { Orders } from "./Pages/P2P/Orders/Orders";
 import { Me } from "./Pages/Me/Me";
 import { CreateOrder } from "./Pages/P2P/CreateOrder/CreateOrder";
 
@@ -19,7 +19,7 @@ export const Router = () => {
         <Route path="/transactions" element={<Profile />} />
         <Route path="/order/:id" element={<Order />} />
         <Route path="/p2p/my-orders" element={<MyOrders />} />
-        <Route path="/p2p/deals" element={<Trading />} />
+        <Route path="/p2p/orders" element={<Orders />} />
         <Route path="/chat/:id" element={<Chat />} />
         <Route path="/me" element={<Me />} />
         <Route path="/p2p/create-order" element={<CreateOrder />} />

@@ -38,7 +38,7 @@ export const Header = () => {
         Гоблин
       </div>
       <ul className={styles.header_links}>
-        <Link className={styles.header_links_item} to={"/p2p/deals"}>
+        <Link className={styles.header_links_item} to={"/p2p/orders"}>
           P2P
         </Link>
         <Link className={styles.header_links_item}>Процессинг</Link>

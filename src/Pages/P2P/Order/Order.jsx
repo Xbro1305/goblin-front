@@ -1,38 +1,80 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Order.module.scss";
 import bg from "../../../assets/images/Group 756.png";
 import { TbCopy } from "react-icons/tb";
 import { enqueueSnackbar } from "notistack";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export const Order = () => {
+  const [data, setData] = useState({});
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    axios(process.env.REACT_APP_BASE_URL + "/api/p2p/offers/by-id/" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => setData(res.data))
+      .catch(() =>
+        enqueueSnackbar("что-то пошло не так", { variant: "error" })
+      );
+  }, []);
+
+  const deal = () => {
+    axios(process.env.REACT_APP_BASE_URL + "/api/p2p/deals/create", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      data: {
+        offerId: Number(id),
+      },
+    })
+      .then((res) => enqueueSnackbar("Сделка создана"))
+      .catch(() =>
+        enqueueSnackbar("что-то пошло не так", { variant: "error" })
+      );
+  };
+
   return (
     <div className={styles.order}>
       <img src={bg} className="background" alt="" />
-      <h1 className="h1 title">Pending Payment</h1>
+      <h1 className="h1 title">Order info</h1>
       <div className={styles.order_content}>
         <div className={styles.order_content_main}>
           <div className={styles.order_content_top}>
             <p className="p">
-              <span style={{ color: "#BE1600" }}>Sell</span> USDT
+              <span
+                style={{ color: data.type == "SELL" ? "#BE1600" : "#567e5f" }}
+              >
+                {data.type}
+              </span>{" "}
+              USDT
             </p>
 
-            <button className="button green-button">Contact Buyer</button>
+            {/* <button className="button green-button">Contact Buyer</button> */}
           </div>
           <div className={styles.order_content_item}>
             <section className={styles.order_content_item_section}>
               <span className="span">Amount</span>
               <p className="p" style={{ color: "#BE1600", fontWeight: "600" }}>
-                1,500.00 RUB
+                {data.amount} USDT
               </p>
             </section>
             <section className={styles.order_content_item_section}>
               <span className="span">Price</span>
-              <p className="p">85.12 RUB</p>
+              <p className="p">{data.price} RUB</p>
             </section>
-            <section className={styles.order_content_item_section}>
+            {/* <section className={styles.order_content_item_section}>
               <span className="span">Quantity</span>
               <p className="p">17.6222 USDT</p>
-            </section>
+            </section> */}
             <section className={styles.order_content_item_section}>
               <span className="span">Transaction Fees</span>
               <p className="p">0 USDT</p>
@@ -40,7 +82,7 @@ export const Order = () => {
             <section className={styles.order_content_item_section}>
               <span className="span">Order No.</span>
               <p className="p">
-                1909658797187162112
+                {id}
                 <span>
                   <TbCopy
                     style={{ color: "#2A2E2B71", cursor: "pointer" }}
@@ -49,7 +91,7 @@ export const Order = () => {
                         variant: "success",
                         autoHideDuration: 2000,
                       });
-                      navigator.clipboard.writeText("1909658797187162112");
+                      navigator.clipboard.writeText(id);
                     }}
                   />
                 </span>
@@ -57,7 +99,7 @@ export const Order = () => {
             </section>
             <section className={styles.order_content_item_section}>
               <span className="span">Order Time</span>
-              <p className="p">2025-04-08 19:25:12</p>
+              <p className="p">{new Date(data.createdAt).toLocaleString()}</p>
             </section>
           </div>
           {/* <div className={styles.order_content_top}>
@@ -139,9 +181,9 @@ export const Order = () => {
           </div> */}
         </div>
       </div>
-      <p className="p" style={{ borderBottom: "1px solid #9D9D9D" }}>
+      {/* <p className="p" style={{ borderBottom: "1px solid #9D9D9D" }}>
         Transaction Info
-      </p>
+      </p> */}
       <button
         className="green-button"
         style={{
@@ -151,12 +193,13 @@ export const Order = () => {
           height: "auto",
           margin: "0 auto",
         }}
+        onClick={deal}
       >
-        Release Now
+        Deal
       </button>
-      <p className="span" style={{ textAlign: "center" }}>
+      {/* <p className="span" style={{ textAlign: "center" }}>
         Encountered an Issue
-      </p>
+      </p> */}
     </div>
   );
 };

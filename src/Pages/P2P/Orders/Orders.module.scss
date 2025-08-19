@@ -1,9 +1,21 @@
-.trading {
+.deals {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px var(--sides-padding);
+
+  &_top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      font-size: 36px;
+      color: #4e865a;
+      margin-right: 10px;
+    }
+  }
 
   &_content {
     padding: 20px;
@@ -48,7 +60,8 @@
           align-items: center;
           gap: 20px;
 
-          select {
+          select,
+          input {
             background: #fff;
             border-radius: 10px;
             padding: 5px 10px;
@@ -87,6 +100,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        button {
+          padding: 5px 35px;
+          border-radius: 10px;
+          color: white;
+        }
 
         &_left {
           display: flex;

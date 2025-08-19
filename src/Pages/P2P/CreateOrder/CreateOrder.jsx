@@ -17,9 +17,9 @@ export const CreateOrder = () => {
       method: "POST",
       data: {
         type: page,
-        amount: Number(e.target.amount.value),
+        amount: Number(e.target.amount.value.split(" USDT")[0]),
         currency,
-        price: Number(e.target.price.value),
+        price: Number(e.target.price.value.split(" RUB")[0]),
         paymentMethodIds: [],
       },
 
@@ -30,14 +30,14 @@ export const CreateOrder = () => {
     })
       .then((res) => {
         console.log(res.data);
-        enqueueSnackbar(res.data.message, {
+        enqueueSnackbar("Cоздано", {
           variant: "success",
           autoHideDuration: 2000,
         });
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status === 401) {
+        if (err?.response?.status === 401) {
           localStorage.removeItem("token");
           window.location.reload();
         }
@@ -88,12 +88,10 @@ export const CreateOrder = () => {
             <p className="p">Сумма</p>
             <NumericFormat
               className="span"
+              suffix=" USDT"
               name="amount"
               thousandSeparator={true}
               fixedDecimalScale={true}
-              placeholder="5-10000"
-              min={5}
-              max={10000}
               allowNegative={false}
               allowLeadingZeros={false}
               allowEmptyFormatting={false}
@@ -124,7 +122,6 @@ export const CreateOrder = () => {
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
               name="currency"
-              
               id=""
             >
               <option value="usdt">RUB</option>
@@ -134,37 +131,24 @@ export const CreateOrder = () => {
             <p className="p">Торговая цена</p>
             <NumericFormat
               className="span"
+              suffix=" RUB"
               thousandSeparator={true}
               name="price"
               fixedDecimalScale={true}
-              placeholder="5-10000"
-              min={5}
-              max={10000}
               allowNegative={false}
               allowLeadingZeros={false}
               allowEmptyFormatting={false}
             ></NumericFormat>
           </label>
           <label>
-            <p className="p">Лимит заказов</p>
-            <NumericFormat
-              className="span"
-              thousandSeparator={true}
-              fixedDecimalScale={true}
-              min={5}
-              name="limit"
-              max={100}
-              allowNegative={false}
-              allowLeadingZeros={false}
-              allowEmptyFormatting={false}
-            ></NumericFormat>
+            <p className="p">&nbsp;</p>
+            <button
+              className="green-button"
+              style={{ height: "45px", boxShadow: "none" }}
+            >
+              Объявить
+            </button>
           </label>
-          <button
-            className="green-button"
-            style={{ height: "45px", boxShadow: "none" }}
-          >
-            Объявить
-          </button>
         </div>
       </form>
     </div>
