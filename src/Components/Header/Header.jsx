@@ -45,8 +45,8 @@ export const Header = () => {
         <Link className={styles.header_links_item} to="/transactions">
           Переводы
         </Link>
-        <Link className={styles.header_links_item} to="/p2p/my-orders">
-          Мои объявления
+        <Link className={styles.header_links_item} to="/p2p/my-deals">
+          Мои сделки
         </Link>
       </ul>
       <div className={`${styles.header_links} ${styles.header_contacts}`}>

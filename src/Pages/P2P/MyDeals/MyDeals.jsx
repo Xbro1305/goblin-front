@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styles from "./MyOrders.module.scss";
+import styles from "./MyDeals.module.scss";
 import bg from "../../../assets/images/Group 756.png";
 import { BsFillTriangleFill } from "react-icons/bs";
 import { TbCopy } from "react-icons/tb";
@@ -8,7 +8,7 @@ import { enqueueSnackbar } from "notistack";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export const MyOrders = () => {
+export const MyDeals = () => {
   const [page, setPage] = React.useState("active");
   const [data, setData] = React.useState([
     {
@@ -24,8 +24,12 @@ export const MyOrders = () => {
   ]);
 
   useEffect(() => {
-    axios(process.env.REACT_APP_BASE_URL + "/api/p2p/all")
-      .then((res) => setData(res.data))
+    axios(process.env.REACT_APP_BASE_URL + "/api/auth/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => setData(res.data.deals))
       .catch((err) => {
         if (err.response.status === 401) {
           localStorage.removeItem("token");
@@ -42,10 +46,7 @@ export const MyOrders = () => {
   return (
     <div className={styles.myOrders}>
       <img src={bg} className="background" alt="" />
-      <section className={styles.myOrders_top}>
-        <h1 className="h1 title">Orders</h1>
-        <Link to="/p2p/create-order">+</Link>
-      </section>
+      <h1 className="h1 title">Deals</h1>
       <div className={styles.myOrders_content}>
         <div className={styles.myOrders_content_top}>
           <section className={styles.myOrders_content_top_section}>
@@ -72,7 +73,7 @@ export const MyOrders = () => {
               All
             </p>
           </section>
-          <section className={styles.myOrders_content_top_sort}>
+          {/* <section className={styles.myOrders_content_top_sort}>
             <div>
               <p className="span2">All types</p>
               <p style={{ transform: "rotate(180deg)", color: "#00000051" }}>
@@ -85,7 +86,7 @@ export const MyOrders = () => {
                 <BsFillTriangleFill />
               </p>
             </div>
-          </section>
+          </section> */}
         </div>
         <div className={styles.myOrders_content_main}>
           {data.map((item) => {

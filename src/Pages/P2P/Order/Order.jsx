@@ -4,12 +4,14 @@ import bg from "../../../assets/images/Group 756.png";
 import { TbCopy } from "react-icons/tb";
 import { enqueueSnackbar } from "notistack";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Order = () => {
   const [data, setData] = useState({});
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios(process.env.REACT_APP_BASE_URL + "/api/p2p/offers/by-id/" + id, {
@@ -36,9 +38,14 @@ export const Order = () => {
         offerId: Number(id),
       },
     })
-      .then((res) => enqueueSnackbar("Сделка создана"))
-      .catch(() =>
-        enqueueSnackbar("что-то пошло не так", { variant: "error" })
+      .then((res) => {
+        enqueueSnackbar("Сделка создана", { variant: "success" });
+        navigate("/deals/" + res.data.id);
+      })
+      .catch((err) =>
+        enqueueSnackbar(err.response.data.message || "что-то пошло не так", {
+          variant: "error",
+        })
       );
   };
 
