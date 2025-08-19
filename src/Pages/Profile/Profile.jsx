@@ -590,13 +590,13 @@ const navigationItems = [
     icon: <GrTransaction />,
     page: <ProfileTransaction />,
   },
-  // {
-  //   name: "Статистика",
-  //   id: 2,
-  //   key: "statistics",
-  //   icon: <FaChartBar />,
-  //   page: <Info />,
-  // },
+  {
+    name: "Статистика",
+    id: 2,
+    key: "statistics",
+    icon: <FaChartBar />,
+    page: <Info />,
+  },
   {
     name: "История транзакций",
     id: 4,
