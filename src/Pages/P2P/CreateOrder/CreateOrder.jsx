@@ -39,9 +39,11 @@ export const CreateOrder = () => {
       method: "POST",
       data: {
         type: page,
-        amount: Number(e.target.amount.value.split(" USDT")[0]),
+        amount: Number(
+          e.target.amount.value.split(" USDT")[0].replace(",", "")
+        ),
         currency,
-        price: Number(e.target.price.value.split(" RUB")[0]),
+        price: Number(e.target.price.value.split(" RUB")[0].replace(",", "")),
         paymentMethodIds: [],
       },
 
