@@ -5,6 +5,7 @@ import { CiLock, CiUser } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import axios from "axios";
+import { enqueueSnackbar } from "notistack";
 
 export const Signin = () => {
   const [email, setEmail] = react.useState("");
@@ -19,12 +20,13 @@ export const Signin = () => {
   }, [navigate]);
 
   const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (password !== confirmPassword) {
       alert("Пароли не совпадают");
       return;
     }
 
-    e.preventDefault();
     axios(`${baseUrl}/api/auth/register`, {
       method: "POST",
       headers: {
@@ -40,11 +42,10 @@ export const Signin = () => {
       })
       .catch((error) => {
         console.error(error);
-        if (error.response.status === 401) {
-          localStorage.removeItem("token");
-          window.location.reload();
-        }
-        alert("Ошибка регистрации");
+        enqueueSnackbar(error.response.data.message || "Ошибка входа", {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
       });
   };
 

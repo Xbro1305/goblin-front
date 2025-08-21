@@ -34,7 +34,7 @@ export const Login = () => {
       })
       .catch((error) => {
         console.error(error);
-        enqueueSnackbar("Ошибка входа", {
+        enqueueSnackbar(error.response.data.message || "Ошибка входа", {
           variant: "error",
           autoHideDuration: 2000,
         });

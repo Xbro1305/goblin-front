@@ -58,9 +58,9 @@ export const Order = () => {
           <div className={styles.order_content_top}>
             <p className="p">
               <span
-                style={{ color: data.type == "SELL" ? "#BE1600" : "#567e5f" }}
+                style={{ color: data.type == "BUY" ? "#BE1600" : "#567e5f" }}
               >
-                {data.type}
+                {data.type == "SELL" ? "BUY" : "SELL"}
               </span>{" "}
               USDT
             </p>

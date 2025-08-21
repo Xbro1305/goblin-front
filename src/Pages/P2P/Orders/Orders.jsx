@@ -44,9 +44,9 @@ export const Orders = () => {
   useEffect(() => {
     setItems(
       data.filter((item) => {
-        if (page === "Buy") {
+        if (page === "Sell") {
           return item.type === "BUY";
-        } else if (page === "Sell") {
+        } else if (page === "Buy") {
           return item.type === "SELL";
         }
       })
@@ -55,9 +55,9 @@ export const Orders = () => {
 
   useEffect(() => {
     const d = data.filter((item) => {
-      if (page === "Buy") {
+      if (page === "Sell") {
         return item.type === "BUY";
-      } else if (page === "Sell") {
+      } else if (page === "Buy") {
         return item.type === "SELL";
       }
     });

@@ -10,31 +10,24 @@ import { Link } from "react-router-dom";
 
 export const MyDeals = () => {
   const [page, setPage] = React.useState("active");
-  const [data, setData] = React.useState([
-    {
-      id: 1,
-      type: "SELL",
-      amount: 10000,
-      price: 96.5,
-      currency: "RUB",
-      paymentMethodIds: [1, 2],
-      status: "ACTIVE",
-      createdAt: "2025-04-09T12:00:00.000Z",
-    },
-  ]);
+  const [data, setData] = React.useState([]);
+  const [items, setItems] = React.useState([]);
 
   useEffect(() => {
-    axios(process.env.REACT_APP_BASE_URL + "/api/auth/me", {
+    axios(process.env.REACT_APP_BASE_URL + "/api/p2p/deals/my", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-      .then((res) => setData(res.data.deals))
+      .then((res) => {
+        setData(res?.data?.deals?.filter((item) => item.status != "closed"));
+        setItems(res.data.deals);
+      })
       .catch((err) => {
-        if (err.response.status === 401) {
-          localStorage.removeItem("token");
-          window.location.reload();
-        }
+        // if (err.response.status === 401) {
+        //   localStorage.removeItem("token");
+        //   window.location.reload();
+        // }
         console.log(err);
         enqueueSnackbar("Ошибка", {
           variant: "error",
@@ -43,6 +36,10 @@ export const MyDeals = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (page == "all") setData(items);
+    else setData(items?.filter((item) => item.status != "closed"));
+  }, [page]);
   return (
     <div className={styles.myOrders}>
       <img src={bg} className="background" alt="" />
