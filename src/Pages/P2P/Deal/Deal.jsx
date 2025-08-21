@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import styles from "./MyDeals.module.scss";
+import styles from "./Deal.module.scss";
 import bg from "../../../assets/images/Group 756.png";
 import { BsFillTriangleFill } from "react-icons/bs";
 import { TbCopy } from "react-icons/tb";
 import { BsChatLeftDots } from "react-icons/bs";
 import { enqueueSnackbar } from "notistack";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-export const MyDeals = () => {
-  const [page, setPage] = React.useState("active");
+export const Deal = () => {
   const [data, setData] = React.useState([]);
-  const [items, setItems] = React.useState([]);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     axios(process.env.REACT_APP_BASE_URL + "/api/p2p/deals/my", {
@@ -20,14 +20,21 @@ export const MyDeals = () => {
       },
     })
       .then((res) => {
-        setData(res?.data?.filter((item) => item.status != "closed"));
-        setItems(res.data);
+        const deal = res?.data?.find((item) => item.id == id);
+        if (deal) setData([deal]);
+        else {
+          enqueueSnackbar("Deal not found or is not yours", {
+            variant: "error",
+            autoHideDuration: 2000,
+          });
+          navigate("/p2p/my-deals");
+        }
       })
       .catch((err) => {
-        // if (err.response.status === 401) {
-        //   localStorage.removeItem("token");
-        //   window.location.reload();
-        // }
+        if (err.response.status === 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
         console.log(err);
         enqueueSnackbar("Ошибка", {
           variant: "error",
@@ -36,62 +43,83 @@ export const MyDeals = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (page == "all") setData(items);
-    else setData(items?.filter((item) => item.status != "closed"));
-  }, [page]);
+  const markPaid = () => {
+    axios(`${process.env.REACT_APP_BASE_URL}/api/p2p/deals/${id}/mark-paid`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then(() => {
+        enqueueSnackbar("Marked as paid", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+        setData((prevData) =>
+          prevData.map((deal) =>
+            deal.id === id ? { ...deal, status: "PAID" } : deal
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+        enqueueSnackbar(
+          err.response.data.message || "Error confirming payment",
+          {
+            variant: "error",
+            autoHideDuration: 2000,
+          }
+        );
+      });
+  };
+
+  const markSeen = () => {
+    axios(`${process.env.REACT_APP_BASE_URL}/api/p2p/deals/${id}/mark-seen`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then(() => {
+        enqueueSnackbar("Payment confirmed", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+        setData((prevData) =>
+          prevData.map((deal) =>
+            deal.id === id ? { ...deal, status: "COMPLETED" } : deal
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+        enqueueSnackbar(
+          err.response.data.message || "Error confirming payment",
+          {
+            variant: "error",
+            autoHideDuration: 2000,
+          }
+        );
+      });
+  };
+
   return (
     <div className={styles.myOrders}>
       <img src={bg} className="background" alt="" />
-      <h1 className="h1 title">Deals</h1>
+      <h1 className="h1 title">Deal No. {id}</h1>
       <div className={styles.myOrders_content}>
-        <div className={styles.myOrders_content_top}>
-          <section className={styles.myOrders_content_top_section}>
-            <p
-              className="p"
-              onClick={() => setPage("active")}
-              style={
-                page === "active"
-                  ? { borderBottom: "2px solid var(--green)", color: "#000" }
-                  : { color: "#2A2E2B71" }
-              }
-            >
-              Active
-            </p>
-            <p
-              className="p"
-              onClick={() => setPage("all")}
-              style={
-                page === "all"
-                  ? { borderBottom: "2px solid var(--green)", color: "#000" }
-                  : { color: "#2A2E2B71" }
-              }
-            >
-              All
-            </p>
-          </section>
-          {/* <section className={styles.myOrders_content_top_sort}>
-            <div>
-              <p className="span2">All types</p>
-              <p style={{ transform: "rotate(180deg)", color: "#00000051" }}>
-                <BsFillTriangleFill />
-              </p>
-            </div>
-            <div>
-              <p className="span2">All Statuses</p>
-              <p>
-                <BsFillTriangleFill />
-              </p>
-            </div>
-          </section> */}
-        </div>
         <div className={styles.myOrders_content_main}>
           {data?.map((item) => {
             return (
-              <Link
-                to={`/deal/${item.id}`}
-                className={styles.myOrders_content_item}
-              >
+              <div className={styles.myOrders_content_item}>
                 <div className={styles.myOrders_content_item_top}>
                   <section>
                     <p className="p">
@@ -113,7 +141,28 @@ export const MyDeals = () => {
                     <section
                       className={styles.myOrders_content_item_top_section}
                     >
-                      <p>Перейти {">      "} </p>
+                      {/* <p>Pending Payment</p> */}
+                      {/* <p>28:04</p> */}
+                      {item.status == "CREATED" && item.myRole == "SELLER" ? (
+                        <p className="span2">Waiting for buyer</p>
+                      ) : item.status == "CREATED" &&
+                        item.myRole == "BUYER" ? (
+                        <button onClick={markPaid} className="green-button">
+                          Отметить оплату
+                        </button>
+                      ) : item.status == "PAID" && item.myRole == "SELLER" ? (
+                        <button className="green-button" onClick={markSeen}>
+                          Подтвердить оплату
+                        </button>
+                      ) : item.status == "PAID" && item.myRole == "BUYER" ? (
+                        <p className="span2">Waiting for confirmation</p>
+                      ) : item.status == "CANCELED" ? (
+                        <p className="span2">Canceled</p>
+                      ) : item.status == "COMPLETED" ? (
+                        <p className="span2">Completed</p>
+                      ) : (
+                        <p className="span2">Unknown Status</p>
+                      )}
                     </section>
                     {/* <p>{">"}</p> */}
                   </div>
@@ -160,7 +209,7 @@ export const MyDeals = () => {
                     <BsChatLeftDots />
                   </p>
                 </section>
-              </Link>
+              </div>
             );
           })}
         </div>

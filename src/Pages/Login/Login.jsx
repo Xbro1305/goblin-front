@@ -31,6 +31,7 @@ export const Login = () => {
         const token = response.data.token;
         localStorage.setItem("token", token);
         navigate("/me");
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);

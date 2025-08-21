@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreateOrder.module.scss";
 import bg from "../../../assets/images/Group 756.png";
 import { NumericFormat } from "react-number-format";
@@ -9,6 +9,28 @@ import { enqueueSnackbar } from "notistack";
 export const CreateOrder = () => {
   const [page, setPage] = useState("BUY");
   const [currency, setCurrency] = useState("RUB");
+  const [balance, setBalance] = useState({});
+
+  useEffect(() => {
+    axios(process.env.REACT_APP_BASE_URL + "/api/transactions/balance", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => setBalance(res.data))
+      .catch((err) => {
+        console.log(err);
+        if (err?.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
+        enqueueSnackbar(err.response.data.message, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -94,7 +116,6 @@ export const CreateOrder = () => {
               fixedDecimalScale={true}
               allowNegative={false}
               allowLeadingZeros={false}
-              allowEmptyFormatting={false}
             ></NumericFormat>
           </label>
           <label>
@@ -137,7 +158,6 @@ export const CreateOrder = () => {
               fixedDecimalScale={true}
               allowNegative={false}
               allowLeadingZeros={false}
-              allowEmptyFormatting={false}
             ></NumericFormat>
           </label>
           <label>
@@ -148,6 +168,11 @@ export const CreateOrder = () => {
             >
               Объявить
             </button>
+          </label>
+          <label>
+            <p className="p">
+              Balance: USDT: {balance.usdtBalance} TRX: {balance.trxBalance}
+            </p>
           </label>
         </div>
       </form>
