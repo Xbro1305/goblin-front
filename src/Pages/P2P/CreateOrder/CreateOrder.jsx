@@ -5,11 +5,13 @@ import { NumericFormat } from "react-number-format";
 import { IoCard } from "react-icons/io5";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import { Loader } from "../../../Components/Loader/Loader";
 
 export const CreateOrder = () => {
   const [page, setPage] = useState("BUY");
   const [currency, setCurrency] = useState("RUB");
   const [balance, setBalance] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios(process.env.REACT_APP_BASE_URL + "/api/transactions/balance", {
@@ -29,10 +31,12 @@ export const CreateOrder = () => {
           variant: "error",
           autoHideDuration: 2000,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
 
     axios(process.env.REACT_APP_BASE_URL + "/api/p2p/offers/create", {
@@ -69,11 +73,13 @@ export const CreateOrder = () => {
           variant: "error",
           autoHideDuration: 2000,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={styles.createOrder}>
+      {loading && <Loader />}
       <img src={bg} className="background" alt="" />
       <div className={styles.createOrder_top}>
         <button

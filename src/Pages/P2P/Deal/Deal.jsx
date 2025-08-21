@@ -7,9 +7,11 @@ import { BsChatLeftDots } from "react-icons/bs";
 import { enqueueSnackbar } from "notistack";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Loader } from "../../../Components/Loader/Loader";
 
 export const Deal = () => {
   const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -40,10 +42,12 @@ export const Deal = () => {
           variant: "error",
           autoHideDuration: 2000,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const markPaid = () => {
+    setLoading(true);
     axios(`${process.env.REACT_APP_BASE_URL}/api/p2p/deals/${id}/mark-paid`, {
       method: "PATCH",
       headers: {
@@ -74,10 +78,13 @@ export const Deal = () => {
             autoHideDuration: 2000,
           }
         );
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const markSeen = () => {
+    setLoading(true);
+
     axios(`${process.env.REACT_APP_BASE_URL}/api/p2p/deals/${id}/mark-seen`, {
       method: "PATCH",
       headers: {
@@ -108,11 +115,13 @@ export const Deal = () => {
             autoHideDuration: 2000,
           }
         );
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={styles.myOrders}>
+      {loading && <Loader />}
       <img src={bg} className="background" alt="" />
       <h1 className="h1 title">Deal No. {id}</h1>
       <div className={styles.myOrders_content}>
@@ -145,8 +154,7 @@ export const Deal = () => {
                       {/* <p>28:04</p> */}
                       {item.status == "CREATED" && item.myRole == "SELLER" ? (
                         <p className="span2">Waiting for buyer</p>
-                      ) : item.status == "CREATED" &&
-                        item.myRole == "BUYER" ? (
+                      ) : item.status == "CREATED" && item.myRole == "BUYER" ? (
                         <button onClick={markPaid} className="green-button">
                           Отметить оплату
                         </button>
